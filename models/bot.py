@@ -2,7 +2,6 @@ from discord import Guild, Member, VoiceState, Message
 
 from discord.ext import commands
 
-from models import config
 from models.raffle import Raffle
 
 
@@ -16,11 +15,11 @@ class MyClient(commands.Bot):
 
 
     async def on_ready(self):
-        config.load_data(self.raffle)
+        self.raffle.load_data()
         print('Logged on as {0}!'.format(self.user))
 
         # noinspection PyAttributeOutsideInit
-        self.home = self.get_guild(config.config_data["guild"])
+        self.home = self.get_guild(self.raffle.config_data["guild"])
 
         self.raffle.members = self.home.members
         for vc in self.home.voice_channels:
@@ -49,7 +48,7 @@ class MyClient(commands.Bot):
         if message.author == self.user:
             return
 
-        if message.author.id != config.config_data["owner"]:
+        if message.author.id != self.raffle.config_data["owner"]:
             return
 
         # Increment message counter
@@ -72,13 +71,13 @@ class MyClient(commands.Bot):
             await message.channel.send('Hello!')
 
         if message.content.startswith('$path'):
-            print(config.config_data)
+            print(self.raffle.config_data)
 
         if message.content.startswith('$games'):
             print(self.raffle.games)
 
         if message.content.startswith('$save'):
-            config.save_data(self.raffle)
+            self.raffle.save_data()
 
         if message.content.startswith('$shut'):
             for vc in self.home.voice_channels:
@@ -88,6 +87,6 @@ class MyClient(commands.Bot):
                     self.raffle.get_player(member).stop_counter()
                     print("Stopping counter for {0}".format(self.raffle.get_player(member)))
 
-            config.save_data(self.raffle)
+            self.raffle.save_data()
             await message.channel.send('Raffalo is shutting down!')
             await self.close()

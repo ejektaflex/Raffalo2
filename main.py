@@ -7,7 +7,6 @@ from discord.ext import commands
 from discord_slash import SlashCommand, SlashContext
 
 from models.bot import MyClient
-from models.config import config_data
 from models.player import Player
 
 client = MyClient(command_prefix="!", intents=discord.Intents.all())
@@ -16,7 +15,7 @@ slash = SlashCommand(client, sync_commands=False)
 
 
 @slash.slash(name="ping",
-             guild_ids=[config_data['guild']],
+             guild_ids=[client.raffle.config_data['guild']],
              description="Pings Raffalo."
              )
 async def _ping(ctx: SlashContext):
@@ -27,11 +26,11 @@ async def _ping(ctx: SlashContext):
 
 
 @slash.slash(name="fetch",
-             guild_ids=[config_data['guild']],
+             guild_ids=[client.raffle.config_data['guild']],
              description="Fetches Stuff.")
 async def _fetch(ctx: SlashContext):
     print("Hello!")
     client.raffle.sync_games()
 
 
-client.run(config_data['bot_token'])
+client.run(client.raffle.config_data['bot_token'])
