@@ -5,6 +5,7 @@ from typing import List, Dict
 import requests
 from discord import Member
 
+from models.config import config_data
 from models.game import Game
 from models.player import Player
 
@@ -23,8 +24,8 @@ class Raffle:
         )
 
     def sync_games(self):
-        res = requests.get("https://api.airtable.com/v0/appI7zo11vMYjLU5W/Games?view=Grid%20view",
-                           headers={"Authorization": "Bearer keyokE9ovBv3YaOwY"}
+        res = requests.get("https://api.airtable.com/v0/{0}/Games?view=Grid%20view".format(config_data['airtable_table_key']),
+                           headers={"Authorization": "Bearer {0}".format(config_data['airtable_user_key'])}
                            )
         response_dict = json.loads(res.content)["records"]
         print(response_dict)
@@ -39,7 +40,7 @@ class Raffle:
             new_game.picked = fields.get("Picked", False)
             new_game.text = fields.get("Raffle Text", None)
             new_game.steam_id = fields.get("SteamId", None)
-            print(new_game)
+            print(new_game.name)
             self.games.append(new_game)
 
     def is_finalist(self, member: Member) -> bool:

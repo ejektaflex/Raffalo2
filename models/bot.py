@@ -29,6 +29,7 @@ class MyClient(commands.Bot):
                 print(member.nick)
                 self.raffle.get_player(member).start_counter()
                 print("Starting counter for {0}".format(self.raffle.get_player(member)))
+        self.raffle.sync_games()
         print('Bot should be ready now.')
 
     async def on_voice_state_update(self, member: Member, before: VoiceState, after: VoiceState):
@@ -72,6 +73,9 @@ class MyClient(commands.Bot):
 
         if message.content.startswith('$path'):
             print(config.config_data)
+
+        if message.content.startswith('$games'):
+            print(self.raffle.games)
 
         if message.content.startswith('$save'):
             config.save_data(self.raffle)
