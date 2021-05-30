@@ -1,13 +1,9 @@
 import asyncio
 
 import discord
-import json
-
-from discord.ext import commands
 from discord_slash import SlashCommand, SlashContext
 
 from models.bot import MyClient
-from models.player import Player
 
 client = MyClient(command_prefix="!", intents=discord.Intents.all())
 

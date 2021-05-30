@@ -43,3 +43,9 @@ class Player:
         pre = 1 + agg
         boosted = pre * (1 + (0.2 * self.boosts))
         return boosted
+
+    def reset(self):
+        self.num_react = 0
+        self.num_voice = 0
+        self.num_message = 0
+

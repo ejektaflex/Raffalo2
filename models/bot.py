@@ -79,6 +79,12 @@ class MyClient(commands.Bot):
         if message.content.startswith('$save'):
             self.raffle.save_data()
 
+        if message.content.startswith('$start'):
+            await self.raffle.start(message.channel, 1)
+
+        if message.content.startswith('$end'):
+            await self.raffle.end(message.channel)
+
         if message.content.startswith('$shut'):
             for vc in self.home.voice_channels:
                 member: Member

@@ -9,3 +9,7 @@ class Game:
     picked: bool = False
     text: str = "UNKNOWN_GAME_TEXT"
     steam_id: int = 0
+    submitters: List[int]
+
+    def __init__(self, base_dict: dict):
+        self.__dict__.update(base_dict)
